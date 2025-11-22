@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Wild_Atlas.Services
 {
@@ -11,7 +12,7 @@ namespace Wild_Atlas.Services
     {
         private readonly string _baseUrl = "https://api.gbif.org/v1/";
 
-        public async Task<int?> GetTaxonKey(string commonName)
+        private async Task<int?> GetTaxonKeyAsync(string commonName)
         {
             HttpClient client = new HttpClient();
 
@@ -42,6 +43,38 @@ namespace Wild_Atlas.Services
             int key = first.GetProperty("key").GetInt32();
 
             return key;
+        }
+
+        public async Task<int> GetObservationCountAsync(string name, string polygon, int startYear, int endYear)
+        {
+            int? taxonKey = await GetTaxonKeyAsync(name);
+
+            if (!taxonKey.HasValue)
+                return 0;
+
+            string encodedPolygon = Uri.EscapeDataString(polygon);
+
+            string url =
+                "https://api.gbif.org/v1/occurrence/search?" +
+                $"taxon_key={taxonKey.Value}" +
+                $"&year={startYear},{endYear}" +
+                "&has_coordinate=true" +
+                $"&geometry={encodedPolygon}" +
+                "&limit=0";
+
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            JsonDocument doc = JsonDocument.Parse(json);
+            JsonElement root = doc.RootElement;
+
+            int count = root.GetProperty("count").GetInt32();
+
+            return count;
         }
     }
 }
