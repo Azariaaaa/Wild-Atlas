@@ -1,0 +1,40 @@
+# Build
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+bld/
+out/
+
+# MAUI specifics
+**/Platforms/Android/*.keystore
+**/Platforms/Android/.gradle/
+**/Platforms/iOS/obj/
+**/Platforms/MacCatalyst/obj/
+**/Resources/Raw/*.db
+
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Others
+*.tmp
+*.temp
+*.db-wal
+*.db-shm
