@@ -4,15 +4,19 @@ namespace Wild_Atlas;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    private readonly MainPageViewModel _viewModel;
+
+    public MainPage(MainPageViewModel viewModel)
+    {
+        InitializeComponent();
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+    }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        (BindingContext as MainPageViewModel)?.OnPageAppearing();
+        _viewModel.OnPageAppearing();
     }
 }
 
