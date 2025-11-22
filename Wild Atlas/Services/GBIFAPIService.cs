@@ -12,7 +12,7 @@ namespace Wild_Atlas.Services
     {
         private readonly string _baseUrl = "https://api.gbif.org/v1/";
 
-        private async Task<int?> GetTaxonKey(string commonName)
+        public async Task<int?> GetTaxonKey(string commonName)
         {
             HttpClient client = new HttpClient();
 

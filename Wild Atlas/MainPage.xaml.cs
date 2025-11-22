@@ -1,12 +1,18 @@
-﻿namespace Wild_Atlas;
+﻿using Wild_Atlas.ViewModels;
+
+namespace Wild_Atlas;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
-
 	public MainPage()
 	{
 		InitializeComponent();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as MainPageViewModel)?.OnPageAppearing();
+    }
 }
 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Wild_Atlas.Services;
+using Wild_Atlas.ViewModels;
 
 namespace Wild_Atlas;
 
@@ -15,8 +17,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+        builder.Services.AddSingleton<GBIFAPIService>();
+        builder.Services.AddTransient<MainPageViewModel>();
+
+        builder.Services.AddTransient<MainPage>();
+
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();
