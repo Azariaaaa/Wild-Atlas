@@ -5,7 +5,7 @@
              Title="SpeciesCheckForm">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="$$$ TOAST §§§"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

@@ -1,4 +1,5 @@
 ﻿using Wild_Atlas.ViewModels;
+using Wild_Atlas.Views;
 
 namespace Wild_Atlas;
 
@@ -19,9 +20,9 @@ public partial class MainPage : ContentPage
         _viewModel.OnPageAppearing();
     }
 
-    private void OnButton1Tapped(object sender, TappedEventArgs e)
+    private async void OnButton1Tapped(object sender, TappedEventArgs e)
     {
-        // ...
+        await Navigation.PushAsync(new SpeciesCheckForm());
     }
 
     private void OnButton2Tapped(object sender, TappedEventArgs e)
