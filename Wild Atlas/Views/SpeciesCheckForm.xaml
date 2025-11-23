@@ -4,22 +4,23 @@
              x:Class="Wild_Atlas.Views.SpeciesCheckForm"
              Title="SpeciesCheckForm">
 
-    <VerticalStackLayout Padding="20" Spacing="10">
+    <VerticalStackLayout Padding="20" Spacing="12">
 
-        <HorizontalStackLayout Spacing="8">
-            <CheckBox x:Name="CbMammifere" />
-            <Label Text="Mammifère" VerticalOptions="Center" />
-        </HorizontalStackLayout>
+        <!-- Checklist -->
+        <CollectionView
+            ItemsSource="{Binding Items}"
+            SelectionMode="None">
 
-        <HorizontalStackLayout Spacing="8">
-            <CheckBox x:Name="CbOiseau" />
-            <Label Text="Oiseau" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-
-        <HorizontalStackLayout Spacing="8">
-            <CheckBox x:Name="CbReptile" />
-            <Label Text="Reptile" VerticalOptions="Center" />
-        </HorizontalStackLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <HorizontalStackLayout Spacing="8" Padding="4">
+                        <CheckBox IsChecked="{Binding IsChecked}" />
+                        <Label Text="{Binding Label}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
     </VerticalStackLayout>
 
