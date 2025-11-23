@@ -33,7 +33,7 @@
                     VerticalOptions="Center">
 
                     <Image Source="icon1.svg" WidthRequest="32" HeightRequest="32" />
-                    <Label Text="Bouton 1" FontSize="12" HorizontalOptions="Center" />
+                    <Label Text="Species Data Check" FontSize="12" HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Border>
 

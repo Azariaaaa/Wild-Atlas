@@ -3,10 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Wild_Atlas.Views.SpeciesCheckForm"
              Title="SpeciesCheckForm">
-    <VerticalStackLayout>
-        <Label 
-            Text="$$$ TOAST §§§"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <HorizontalStackLayout Spacing="8">
+            <CheckBox x:Name="CbMammifere" />
+            <Label Text="Mammifère" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="8">
+            <CheckBox x:Name="CbOiseau" />
+            <Label Text="Oiseau" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="8">
+            <CheckBox x:Name="CbReptile" />
+            <Label Text="Reptile" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
     </VerticalStackLayout>
+
 </ContentPage>
