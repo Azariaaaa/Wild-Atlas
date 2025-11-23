@@ -1,7 +1,113 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wild_Atlas.MainPage">
+             x:Class="Wild_Atlas.MainPage"
+             BackgroundColor="White">
 
+    <VerticalStackLayout
+        Padding="20"
+        HorizontalOptions="Center"
+        VerticalOptions="Start">
+
+        <Grid
+            RowDefinitions="Auto,Auto"
+            ColumnDefinitions="Auto,Auto"
+            ColumnSpacing="20"
+            RowSpacing="20">
+
+            <!-- Bouton 1 -->
+            <Border
+                Grid.Row="0" Grid.Column="0"
+                WidthRequest="120"
+                HeightRequest="120"
+                BackgroundColor="#E0E0E0"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 16">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnButton1Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout
+                    Spacing="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Image Source="icon1.svg" WidthRequest="32" HeightRequest="32" />
+                    <Label Text="Bouton 1" FontSize="12" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bouton 2 -->
+            <Border
+                Grid.Row="0" Grid.Column="1"
+                WidthRequest="120"
+                HeightRequest="120"
+                BackgroundColor="#E0E0E0"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 16">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnButton2Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout
+                    Spacing="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Image Source="icon2.svg" WidthRequest="32" HeightRequest="32" />
+                    <Label Text="Bouton 2" FontSize="12" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bouton 3 -->
+            <Border
+                Grid.Row="1" Grid.Column="0"
+                WidthRequest="120"
+                HeightRequest="120"
+                BackgroundColor="#E0E0E0"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 16">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnButton3Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout
+                    Spacing="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Image Source="icon3.svg" WidthRequest="32" HeightRequest="32" />
+                    <Label Text="Bouton 3" FontSize="12" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bouton 4 -->
+            <Border
+                Grid.Row="1" Grid.Column="1"
+                WidthRequest="120"
+                HeightRequest="120"
+                BackgroundColor="#E0E0E0"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 16">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnButton4Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout
+                    Spacing="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Image Source="icon4.svg" WidthRequest="32" HeightRequest="32" />
+                    <Label Text="Bouton 4" FontSize="12" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+        </Grid>
+
+    </VerticalStackLayout>
 
 </ContentPage>

@@ -18,5 +18,24 @@ public partial class MainPage : ContentPage
         base.OnAppearing();
         _viewModel.OnPageAppearing();
     }
+
+    private void OnButton1Tapped(object sender, TappedEventArgs e)
+    {
+        // ...
+    }
+
+    private void OnButton2Tapped(object sender, TappedEventArgs e)
+    {
+        // ...
+    }
+
+    private void OnButton3Tapped(object sender, TappedEventArgs e)
+    {
+        // ...
+    }
+    private void OnButton4Tapped(object sender, TappedEventArgs e)
+    {
+        // ...
+    }
 }
 
