@@ -13,8 +13,8 @@ namespace Wild_Atlas.ViewModels
 
         public async void OnPageAppearing()
         {
-            int? key = await _gbifService.GetTaxonKey("mésange charbonnière");
-            Console.WriteLine($"TaxonKey: {key}");
+            int? count = await _gbifService.GetObservationCountAsync("grand-duc d'europe", "POLYGON((5.8 48.8,7.8 48.8,7.8 49.6,5.8 49.6,5.8 48.8))", 2023, 2024);
+            Console.WriteLine($"Nombre d'observations : {count}");
         }
     }
 }
