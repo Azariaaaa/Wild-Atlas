@@ -63,7 +63,15 @@ namespace Wild_Atlas.ViewModels
             StreamReader reader = new StreamReader(stream);
 
             string json = await reader.ReadToEndAsync();
-            Departements = JsonSerializer.Deserialize<ObservableCollection<Departement>>(json);
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            ObservableCollection<Departement> list = JsonSerializer.Deserialize<ObservableCollection<Departement>>(json, options);
+
+            Departements = list;
         }
     }
 }

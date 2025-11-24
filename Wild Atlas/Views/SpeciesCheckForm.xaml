@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Wild_Atlas.ViewModels"
              x:Class="Wild_Atlas.Views.SpeciesCheckForm"
-             Title="SpeciesCheckForm">
+             Title="SpeciesCheckForm"
+             BackgroundColor="black">
 
     <VerticalStackLayout Padding="20" Spacing="12">
 
@@ -30,7 +31,17 @@
                    Placeholder="Rechercher une espèce..."
                    Text="{Binding SearchBarContent}"/>
             <ListView x:Name="searchResults" />
-            
+
+            <!-- Departements -->
+            <Picker
+                Title="Choisir un département.."
+                ItemsSource="{Binding Departements}"
+                SelectedItem="{Binding SelectedDepartement}"
+                TextColor="Black"
+                BackgroundColor="White"
+                HeightRequest="40"
+                Margin="0,0,0,10" />
+
         </VerticalStackLayout>
 
     </VerticalStackLayout>

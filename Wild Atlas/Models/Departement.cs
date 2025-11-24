@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Wild_Atlas.Models
 {
-    class Departement
+    public class Departement
     {
         public string Code { get; set; }
         public string Nom { get; set; }
+        public override string ToString()
+        => Nom;
     }
 }
