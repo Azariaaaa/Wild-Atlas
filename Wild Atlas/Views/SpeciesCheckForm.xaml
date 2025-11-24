@@ -22,6 +22,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <!-- Searchbar -->
         <SearchBar x:Name="searchBar"
                    Placeholder="Rechercher une espèce..."
                    Text="{Binding SearchBarContent}"/>

@@ -13,8 +13,8 @@ namespace Wild_Atlas.ViewModels
 
         public async void OnPageAppearing()
         {
-            int? count = await _gbifService.GetObservationCountAsync("renouée du japon", "POLYGON((5.8 48.8,7.8 48.8,7.8 49.6,5.8 49.6,5.8 48.8))", 1990, 2024);
-            Console.WriteLine($"Nombre d'observations : {count}");
+            //int? count = await _gbifService.GetObservationCountAsync("renouée du japon", "POLYGON((5.8 48.8,7.8 48.8,7.8 49.6,5.8 49.6,5.8 48.8))", 1990, 2024);
+            //Console.WriteLine($"Nombre d'observations : {count}");
         }
     }
 }
