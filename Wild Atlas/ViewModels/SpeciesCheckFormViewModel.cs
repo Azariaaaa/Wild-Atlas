@@ -18,5 +18,13 @@ namespace Wild_Atlas.ViewModels
             new CheckItem { Label = "Oiseau" },
             new CheckItem { Label = "Insecte" },
         };
+
+        [ObservableProperty]
+        private string searchBarContent;
+
+        partial void OnSearchBarContentChanged(string value)
+        {
+            // à coder
+        }
     }
 }
