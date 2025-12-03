@@ -21,6 +21,8 @@ namespace Wild_Atlas.ViewModels
             new CheckItem { Label = "Insecte" },
         };
 
+        public ObservableCollection<SearchResult> searchResults;
+
         [ObservableProperty]
         private string searchBarContent;
 
@@ -32,6 +34,12 @@ namespace Wild_Atlas.ViewModels
 
         [ObservableProperty]
         private Departement selectedDepartement;
+
+        [ObservableProperty]
+        private int startDate;
+
+        [ObservableProperty]
+        private int endDate; 
 
         public SpeciesCheckFormViewModel()
         {

@@ -11,6 +11,6 @@ namespace Wild_Atlas.Models
         public string Name { get; set; }
         public string ScientificName { get; set; }
         public string ImageLink { get; set; }
-        public double ProbabilitySearchValue { get; set; } // A voir si utile. 
+        public double ProbabilitySearchValue { get; set; } // A voir plus tard si utile. 
     }
 }
