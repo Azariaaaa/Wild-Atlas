@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Wild_Atlas.Models;
 
 namespace Wild_Atlas.ViewModels
@@ -80,6 +81,14 @@ namespace Wild_Atlas.ViewModels
             ObservableCollection<Departement> list = JsonSerializer.Deserialize<ObservableCollection<Departement>>(json, options);
 
             Departements = list;
+        }
+
+        [RelayCommand]
+        private void Submit()
+        {
+            Console.WriteLine("Submit Button work");
+            Console.WriteLine($"StartDate = {StartDate}");
+            Console.WriteLine($"EndDate = {EndDate}");
         }
     }
 }
