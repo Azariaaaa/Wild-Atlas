@@ -46,14 +46,14 @@
             <!-- StartYearInput -->
             <Label Text="Début période" FontAttributes="Bold" />
             <Entry 
-                Text="{Binding StartDate}"
+                Text="{Binding StartYear}"
                 Keyboard="Numeric"
                 Margin="0,0,0,10"/>
 
             <!-- EndYearInput -->
             <Label Text="Fin période" FontAttributes="Bold" />
             <Entry 
-                Text="{Binding EndDate}"
+                Text="{Binding EndYear}"
                 Keyboard="Numeric" />
 
             <Button

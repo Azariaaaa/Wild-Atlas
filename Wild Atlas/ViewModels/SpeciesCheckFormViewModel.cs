@@ -37,10 +37,10 @@ namespace Wild_Atlas.ViewModels
         private Departement selectedDepartement;
 
         [ObservableProperty]
-        private int startDate = 2015;
+        private int startYear = 2015;
 
         [ObservableProperty]
-        private int endDate = 2025;
+        private int endYear = 2025;
 
         public SpeciesCheckFormViewModel()
         {
@@ -87,8 +87,9 @@ namespace Wild_Atlas.ViewModels
         private void Submit()
         {
             Console.WriteLine("Submit Button work");
-            Console.WriteLine($"StartDate = {StartDate}");
-            Console.WriteLine($"EndDate = {EndDate}");
+            Console.WriteLine($"StartDate = {StartYear}");
+            Console.WriteLine($"EndDate = {EndYear}");
         }
     }
 }
+
