@@ -86,9 +86,14 @@ namespace Wild_Atlas.ViewModels
         [RelayCommand]
         private void Submit()
         {
-            Console.WriteLine("Submit Button work");
-            Console.WriteLine($"StartDate = {StartYear}");
-            Console.WriteLine($"EndDate = {EndYear}");
+            SpeciesCheckFormData data = new SpeciesCheckFormData
+            {
+                Departement = SelectedDepartement,
+                StartYear = StartYear,
+                EndYear = EndYear
+            };
+
+            //... 
         }
     }
 }
