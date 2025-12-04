@@ -36,10 +36,10 @@ namespace Wild_Atlas.ViewModels
         private Departement selectedDepartement;
 
         [ObservableProperty]
-        private int startDate;
+        private int startDate = 2015;
 
         [ObservableProperty]
-        private int endDate; 
+        private int endDate = 2025;
 
         public SpeciesCheckFormViewModel()
         {

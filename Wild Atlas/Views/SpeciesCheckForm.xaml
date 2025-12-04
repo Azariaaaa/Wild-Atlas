@@ -18,7 +18,8 @@
                     <HorizontalStackLayout Spacing="8" Padding="4">
                         <CheckBox IsChecked="{Binding IsChecked}" />
                         <Label Text="{Binding Label}"
-                               VerticalOptions="Center" />
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"/>
                     </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -40,7 +41,20 @@
                 TextColor="Black"
                 BackgroundColor="White"
                 HeightRequest="40"
-                Margin="0,0,0,10" />
+                Margin="0,0,0,20" />
+
+            <!-- StartYearInput -->
+            <Label Text="Début période" FontAttributes="Bold" />
+            <Entry 
+                Text="{Binding StartDate}"
+                Keyboard="Numeric"
+                Margin="0,0,0,10"/>
+
+            <!-- EndYearInput -->
+            <Label Text="Fin période" FontAttributes="Bold" />
+            <Entry 
+                Text="{Binding EndDate}"
+                Keyboard="Numeric" />
 
         </VerticalStackLayout>
 
