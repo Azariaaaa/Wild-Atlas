@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wild_Atlas.Models;
+using Wild_Atlas.Views;
 
 namespace Wild_Atlas.ViewModels
 {
@@ -84,7 +85,8 @@ namespace Wild_Atlas.ViewModels
         }
 
         [RelayCommand]
-        private void Submit()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416", Justification = "Shell navigation is cross-platform in .NET MAUI")]
+        private async Task Submit()
         {
             SpeciesCheckFormData data = new SpeciesCheckFormData
             {
@@ -93,7 +95,10 @@ namespace Wild_Atlas.ViewModels
                 EndYear = EndYear
             };
 
-            //... 
+            await Shell.Current.GoToAsync(nameof(SpeciesCheckResult), new Dictionary<string, object>
+            {
+                { "FormData", data }
+            });
         }
     }
 }
