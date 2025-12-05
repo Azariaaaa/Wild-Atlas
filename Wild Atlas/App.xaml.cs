@@ -1,4 +1,6 @@
-﻿namespace Wild_Atlas;
+﻿using Wild_Atlas.Views;
+
+namespace Wild_Atlas;
 
 public partial class App : Application
 {
@@ -7,5 +9,7 @@ public partial class App : Application
 		InitializeComponent();
 
 		MainPage = new AppShell();
-	}
+        Routing.RegisterRoute(nameof(SpeciesCheckForm), typeof(SpeciesCheckForm));
+        Routing.RegisterRoute(nameof(SpeciesCheckResult), typeof(SpeciesCheckResult));
+    }
 }

@@ -24,7 +24,8 @@
                 StrokeShape="RoundRectangle 16">
 
                 <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnButton1Tapped" />
+                    <TapGestureRecognizer 
+                        Command="{Binding OpenSpeciesCheckFormCommand}" />
                 </Border.GestureRecognizers>
 
                 <VerticalStackLayout
