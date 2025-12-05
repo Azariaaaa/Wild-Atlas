@@ -21,12 +21,6 @@ public partial class MainPage : ContentPage
         _viewModel.OnPageAppearing();
     }
 
-    [RelayCommand]
-    private async Task GoToSpeciesCheckFormAsync()
-    {
-        await Shell.Current.GoToAsync(nameof(SpeciesCheckForm));
-    }
-
     private void OnButton2Tapped(object sender, TappedEventArgs e)
     {
         // ...
