@@ -3,10 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Wild_Atlas.Views.SpeciesCheckResult"
              Title="SpeciesCheckResult">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Label Text="Département sélectionné :" 
+               FontAttributes="Bold" />
+        <Label Text="{Binding FormData.Departement.Nom}" />
+
+        <Label Text="GADM ID :" 
+               FontAttributes="Bold" />
+        <Label Text="{Binding FormData.Departement.GadmId}" />
+
+        <Label Text="Période :" 
+               FontAttributes="Bold" />
+        <Label Text="{Binding FormData.StartYear}" />
+        <Label Text="{Binding FormData.EndYear}" />
     </VerticalStackLayout>
+    
 </ContentPage>

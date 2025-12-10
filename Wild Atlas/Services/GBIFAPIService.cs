@@ -11,11 +11,10 @@ namespace Wild_Atlas.Services
     public class GBIFAPIService
     {
         private readonly string _baseUrl = "https://api.gbif.org/v1/";
+        private readonly HttpClient _httpClient = new();
 
         private async Task<int?> GetTaxonKeyAsync(string commonName)
         {
-            HttpClient client = new HttpClient();
-
             string encoded = Uri.EscapeDataString(commonName);
 
             string url =
@@ -25,7 +24,7 @@ namespace Wild_Atlas.Services
                 "&status=ACCEPTED" +
                 "&datasetKey=d7dddbf4-2cf0-4f39-9b2a-bb099caae36c";
 
-            HttpResponseMessage response = await client.GetAsync(url);
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
@@ -45,31 +44,27 @@ namespace Wild_Atlas.Services
             return key;
         }
 
-        public async Task<int> GetObservationCountAsync(string name, string polygon, int startYear, int endYear)
+        public async Task<int> GetObservationCountByGadmAsync(string name, string gadmId, int startYear, int endYear)
         {
             int? taxonKey = await GetTaxonKeyAsync(name);
 
-            if (!taxonKey.HasValue)
+            if (!taxonKey.HasValue || string.IsNullOrWhiteSpace(gadmId))
                 return 0;
 
-            string encodedPolygon = Uri.EscapeDataString(polygon);
-
             string url =
-                "https://api.gbif.org/v1/occurrence/search?" +
+                $"{_baseUrl}occurrence/search?" +
                 $"taxon_key={taxonKey.Value}" +
                 $"&year={startYear},{endYear}" +
                 "&has_coordinate=true" +
-                $"&geometry={encodedPolygon}" +
+                $"&gadmGid={Uri.EscapeDataString(gadmId)}" +
                 "&limit=0";
 
-            HttpClient client = new HttpClient();
-
-            HttpResponseMessage response = await client.GetAsync(url);
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
-            JsonDocument doc = JsonDocument.Parse(json);
+            using JsonDocument doc = JsonDocument.Parse(json);
             JsonElement root = doc.RootElement;
 
             int count = root.GetProperty("count").GetInt32();

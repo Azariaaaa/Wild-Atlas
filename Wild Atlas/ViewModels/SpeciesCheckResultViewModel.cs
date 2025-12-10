@@ -11,7 +11,7 @@ namespace Wild_Atlas.ViewModels
     public partial class SpeciesCheckResultViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
-        private readonly SpeciesCheckFormData formData;
+        private SpeciesCheckFormData formData;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
