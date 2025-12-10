@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls.Shapes;
+using Wild_Atlas.Models;
 
 namespace Wild_Atlas.Services
 {
@@ -13,12 +12,55 @@ namespace Wild_Atlas.Services
         private readonly string _baseUrl = "https://api.gbif.org/v1/";
         private readonly HttpClient _httpClient = new();
 
+        public async Task<SpeciesCheckResultModel> GetSpeciesTrendAsync(
+            string commonName,
+            string gadmId,
+            int startYear,
+            int endYear)
+        {
+            int? taxonKey = await GetTaxonKeyAsync(commonName);
+
+            if (!taxonKey.HasValue || string.IsNullOrWhiteSpace(gadmId))
+            {
+                return new SpeciesCheckResultModel
+                {
+                    YearObservations = new Dictionary<int, int>(),
+                    Trend = "Inconnue"
+                };
+            }
+
+            string url =
+                $"{_baseUrl}occurrence/search?" +
+                $"taxon_key={taxonKey.Value}" +
+                $"&year={startYear},{endYear}" +
+                "&has_coordinate=true" +
+                $"&gadmGid={Uri.EscapeDataString(gadmId)}" +
+                "&limit=300";
+
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            using JsonDocument doc = JsonDocument.Parse(json);
+
+            Dictionary<int, int> yearCounts = GetCountsByYear(doc);
+            double slope = CalculateSlope(yearCounts);
+            string trend = InterpretTrend(slope);
+
+            return new SpeciesCheckResultModel
+            {
+                YearObservations = yearCounts,
+                Trend = trend
+            };
+        }
+
         private async Task<int?> GetTaxonKeyAsync(string commonName)
         {
             string encoded = Uri.EscapeDataString(commonName);
 
             string url =
-                $"https://api.gbif.org/v1/species/search?q={encoded}" +
+                $"{_baseUrl}species/search?q={encoded}" +
                 "&qField=VERNACULAR" +
                 "&rank=SPECIES" +
                 "&status=ACCEPTED" +
@@ -29,7 +71,7 @@ namespace Wild_Atlas.Services
 
             string json = await response.Content.ReadAsStringAsync();
 
-            JsonDocument doc = JsonDocument.Parse(json);
+            using JsonDocument doc = JsonDocument.Parse(json);
             JsonElement root = doc.RootElement;
 
             JsonElement results = root.GetProperty("results");
@@ -44,35 +86,7 @@ namespace Wild_Atlas.Services
             return key;
         }
 
-        public async Task<int> GetObservationCountByGadmAsync(string name, string gadmId, int startYear, int endYear)
-        {
-            int? taxonKey = await GetTaxonKeyAsync(name);
-
-            if (!taxonKey.HasValue || string.IsNullOrWhiteSpace(gadmId))
-                return 0;
-
-            string url =
-                $"{_baseUrl}occurrence/search?" +
-                $"taxon_key={taxonKey.Value}" +
-                $"&year={startYear},{endYear}" +
-                "&has_coordinate=true" +
-                $"&gadmGid={Uri.EscapeDataString(gadmId)}" +
-                "&limit=0";
-
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            string json = await response.Content.ReadAsStringAsync();
-
-            using JsonDocument doc = JsonDocument.Parse(json);
-            JsonElement root = doc.RootElement;
-
-            int count = root.GetProperty("count").GetInt32();
-
-            return count;
-        }
-
-        private Dictionary<int, int> GetYearCounts(JsonDocument doc)
+        private Dictionary<int, int> GetCountsByYear(JsonDocument doc)
         {
             Dictionary<int, int> yearObservations = new Dictionary<int, int>();
 
@@ -83,7 +97,6 @@ namespace Wild_Atlas.Services
                 try
                 {
                     string dateString = item.GetProperty("eventDate").GetString();
-
                     DateTime parsedDate = DateTime.Parse(dateString);
                     int year = parsedDate.Year;
 
@@ -94,11 +107,53 @@ namespace Wild_Atlas.Services
                 }
                 catch
                 {
-                    // 
                 }
             }
 
             return yearObservations;
+        }
+
+        private double CalculateSlope(Dictionary<int, int> yearlyCounts)
+        {
+            int n = yearlyCounts.Count;
+            if (n < 2)
+                return 0;
+
+            double sumX = 0;
+            double sumY = 0;
+            double sumXY = 0;
+            double sumXX = 0;
+
+            foreach (var kvp in yearlyCounts.OrderBy(x => x.Key))
+            {
+                double x = kvp.Key;
+                double y = kvp.Value;
+
+                sumX += x;
+                sumY += y;
+                sumXY += x * y;
+                sumXX += x * x;
+            }
+
+            double numerator = (n * sumXY) - (sumX * sumY);
+            double denominator = (n * sumXX) - (sumX * sumX);
+
+            if (denominator == 0)
+                return 0;
+
+            return numerator / denominator;
+        }
+
+        private string InterpretTrend(double slope)
+        {
+            const double threshold = 0.1;
+
+            if (slope > threshold)
+                return "en augmentation";
+            if (slope < -threshold)
+                return "en régression";
+
+            return "Stable";
         }
     }
 }
