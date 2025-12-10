@@ -4,9 +4,16 @@ namespace Wild_Atlas.Views;
 
 public partial class SpeciesCheckResult : ContentPage
 {
-	public SpeciesCheckResult()
+    private readonly SpeciesCheckResultViewModel _viewModel;
+	public SpeciesCheckResult(SpeciesCheckResultViewModel viewModel)
 	{
 		InitializeComponent();
-        BindingContext = new SpeciesCheckResultViewModel();
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+    }
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.OnPageAppearing();
     }
 }

@@ -71,5 +71,34 @@ namespace Wild_Atlas.Services
 
             return count;
         }
+
+        private Dictionary<int, int> GetYearCounts(JsonDocument doc)
+        {
+            Dictionary<int, int> yearObservations = new Dictionary<int, int>();
+
+            JsonElement results = doc.RootElement.GetProperty("results");
+
+            foreach (JsonElement item in results.EnumerateArray())
+            {
+                try
+                {
+                    string dateString = item.GetProperty("eventDate").GetString();
+
+                    DateTime parsedDate = DateTime.Parse(dateString);
+                    int year = parsedDate.Year;
+
+                    if (yearObservations.ContainsKey(year))
+                        yearObservations[year]++;
+                    else
+                        yearObservations.Add(year, 1);
+                }
+                catch
+                {
+                    // 
+                }
+            }
+
+            return yearObservations;
+        }
     }
 }
