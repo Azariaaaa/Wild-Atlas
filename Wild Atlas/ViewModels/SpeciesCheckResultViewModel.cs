@@ -18,10 +18,10 @@ namespace Wild_Atlas.ViewModels
         private SpeciesCheckFormData formData;
 
         [ObservableProperty]
-        private double trendValue;
+        private string trend;
 
         [ObservableProperty]
-        private string trend;
+        private Dictionary<int, int> yearObservations;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
@@ -33,8 +33,18 @@ namespace Wild_Atlas.ViewModels
 
         public async Task OnPageAppearing()
         {
-            //int? count = await _gbifService.GetObservationCountByGadmAsync("mésange charbonnière", FormData.Departement.GadmId, 1990, 2024);
-            //Console.WriteLine($"Nombre d'observations : {count}");
+            if (FormData == null || FormData.Departement == null)
+                return;
+
+            SpeciesCheckResultModel result = await _gbifService.GetSpeciesTrendAsync(
+                commonName: "mésange charbonnière", // plus tard: espèce choisie
+                gadmId: FormData.Departement.GadmId,
+                startYear: FormData.StartYear,
+                endYear: FormData.EndYear
+            );
+
+            Trend = result.Trend;
+            YearObservations = result.YearObservations;
         }
 
         
