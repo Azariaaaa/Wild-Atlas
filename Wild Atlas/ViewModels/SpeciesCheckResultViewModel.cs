@@ -37,7 +37,7 @@ namespace Wild_Atlas.ViewModels
                 return;
 
             SpeciesCheckResultModel result = await _gbifService.GetSpeciesTrendAsync(
-                commonName: "mésange charbonnière", // plus tard: espèce choisie
+                commonName: "Grand-duc d'Europe", // plus tard: espèce choisie
                 gadmId: FormData.Departement.GadmId,
                 startYear: FormData.StartYear,
                 endYear: FormData.EndYear
@@ -46,7 +46,5 @@ namespace Wild_Atlas.ViewModels
             Trend = result.Trend;
             YearObservations = result.YearObservations;
         }
-
-        
     }
 }

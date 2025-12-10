@@ -22,37 +22,47 @@ namespace Wild_Atlas.Services
 
             if (!taxonKey.HasValue || string.IsNullOrWhiteSpace(gadmId))
             {
-                return new SpeciesCheckResultModel
-                {
-                    YearObservations = new Dictionary<int, int>(),
-                    Trend = "Inconnue"
-                };
+                SpeciesCheckResultModel empty = new SpeciesCheckResultModel();
+                empty.YearObservations = new Dictionary<int, int>();
+                empty.Trend = "Inconnue";
+                return empty;
+            }
+
+            int facetLimit = endYear - startYear + 1;
+            if (facetLimit < 1)
+            {
+                facetLimit = 1;
             }
 
             string url =
-                $"{_baseUrl}occurrence/search?" +
-                $"taxon_key={taxonKey.Value}" +
-                $"&year={startYear},{endYear}" +
+                _baseUrl + "occurrence/search?" +
+                "taxon_key=" + taxonKey.Value +
+                "&year=" + startYear + "," + endYear +
                 "&has_coordinate=true" +
-                $"&gadmGid={Uri.EscapeDataString(gadmId)}" +
-                "&limit=300";
+                "&gadmGid=" + Uri.EscapeDataString(gadmId) +
+                "&limit=0" +
+                "&facet=year" +
+                "&facetLimit=" + facetLimit +
+                "&facetMincount=1";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
-            using JsonDocument doc = JsonDocument.Parse(json);
+            Dictionary<int, int> yearCounts;
+            using (JsonDocument doc = JsonDocument.Parse(json))
+            {
+                yearCounts = GetCountsByYearFromFacets(doc, startYear, endYear);
+            }
 
-            Dictionary<int, int> yearCounts = GetCountsByYear(doc);
             double slope = CalculateSlope(yearCounts);
             string trend = InterpretTrend(slope);
 
-            return new SpeciesCheckResultModel
-            {
-                YearObservations = yearCounts,
-                Trend = trend
-            };
+            SpeciesCheckResultModel result = new SpeciesCheckResultModel();
+            result.YearObservations = yearCounts;
+            result.Trend = trend;
+            return result;
         }
 
         private async Task<int?> GetTaxonKeyAsync(string commonName)
@@ -60,7 +70,7 @@ namespace Wild_Atlas.Services
             string encoded = Uri.EscapeDataString(commonName);
 
             string url =
-                $"{_baseUrl}species/search?q={encoded}" +
+                _baseUrl + "species/search?q=" + encoded +
                 "&qField=VERNACULAR" +
                 "&rank=SPECIES" +
                 "&status=ACCEPTED" +
@@ -71,42 +81,67 @@ namespace Wild_Atlas.Services
 
             string json = await response.Content.ReadAsStringAsync();
 
-            using JsonDocument doc = JsonDocument.Parse(json);
-            JsonElement root = doc.RootElement;
+            using (JsonDocument doc = JsonDocument.Parse(json))
+            {
+                JsonElement root = doc.RootElement;
+                JsonElement results = root.GetProperty("results");
 
-            JsonElement results = root.GetProperty("results");
+                if (results.GetArrayLength() == 0)
+                    return null;
 
-            if (results.GetArrayLength() == 0)
-                return null;
-
-            JsonElement first = results[0];
-
-            int key = first.GetProperty("key").GetInt32();
-
-            return key;
+                JsonElement first = results[0];
+                int key = first.GetProperty("key").GetInt32();
+                return key;
+            }
         }
 
-        private Dictionary<int, int> GetCountsByYear(JsonDocument doc)
+        private Dictionary<int, int> GetCountsByYearFromFacets(JsonDocument doc, int startYear, int endYear)
         {
             Dictionary<int, int> yearObservations = new Dictionary<int, int>();
 
-            JsonElement results = doc.RootElement.GetProperty("results");
-
-            foreach (JsonElement item in results.EnumerateArray())
+            JsonElement root = doc.RootElement;
+            if (!root.TryGetProperty("facets", out JsonElement facets))
             {
-                try
+                return yearObservations;
+            }
+
+            foreach (JsonElement facet in facets.EnumerateArray())
+            {
+                string field = facet.GetProperty("field").GetString();
+                if (!string.Equals(field, "YEAR", StringComparison.OrdinalIgnoreCase))
                 {
-                    string dateString = item.GetProperty("eventDate").GetString();
-                    DateTime parsedDate = DateTime.Parse(dateString);
-                    int year = parsedDate.Year;
+                    continue;
+                }
+
+                JsonElement counts = facet.GetProperty("counts");
+                foreach (JsonElement countElement in counts.EnumerateArray())
+                {
+                    string name = countElement.GetProperty("name").GetString();
+                    int year;
+                    try
+                    {
+                        year = int.Parse(name);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                    if (year < startYear || year > endYear)
+                    {
+                        continue;
+                    }
+
+                    int count = countElement.GetProperty("count").GetInt32();
 
                     if (yearObservations.ContainsKey(year))
-                        yearObservations[year]++;
+                    {
+                        yearObservations[year] += count;
+                    }
                     else
-                        yearObservations.Add(year, 1);
-                }
-                catch
-                {
+                    {
+                        yearObservations.Add(year, count);
+                    }
                 }
             }
 
@@ -124,7 +159,7 @@ namespace Wild_Atlas.Services
             double sumXY = 0;
             double sumXX = 0;
 
-            foreach (var kvp in yearlyCounts.OrderBy(x => x.Key))
+            foreach (KeyValuePair<int, int> kvp in yearlyCounts.OrderBy(x => x.Key))
             {
                 double x = kvp.Key;
                 double y = kvp.Value;

@@ -2,21 +2,43 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Wild_Atlas.Views.SpeciesCheckResult"
-             Title="SpeciesCheckResult">
-    
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Label Text="Département sélectionné :" 
-               FontAttributes="Bold" />
-        <Label Text="{Binding FormData.Departement.Nom}" />
+             Title="Résultat">
 
-        <Label Text="GADM ID :" 
-               FontAttributes="Bold" />
-        <Label Text="{Binding FormData.Departement.GadmId}" />
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
 
-        <Label Text="Période :" 
-               FontAttributes="Bold" />
-        <Label Text="{Binding FormData.StartYear}" />
-        <Label Text="{Binding FormData.EndYear}" />
-    </VerticalStackLayout>
-    
+            <Label Text="Département sélectionné :" FontAttributes="Bold" />
+            <Label Text="{Binding FormData.Departement.Nom}" />
+
+            <Label Text="Période :" FontAttributes="Bold" Margin="0,10,0,0" />
+            <HorizontalStackLayout Spacing="5">
+                <Label Text="{Binding FormData.StartYear}" />
+                <Label Text="→" />
+                <Label Text="{Binding FormData.EndYear}" />
+            </HorizontalStackLayout>
+
+            <Label Text="Tendance :" FontAttributes="Bold" Margin="0,10,0,0" />
+            <Label Text="{Binding Trend}" />
+
+            <Label Text="Observations par année :" 
+                   FontAttributes="Bold"
+                   Margin="0,10,0,0" />
+
+            <CollectionView ItemsSource="{Binding YearObservations}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,*"
+                              Padding="4">
+                            <Label Text="{Binding Key}"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding Value}"
+                                   Grid.Column="1"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
