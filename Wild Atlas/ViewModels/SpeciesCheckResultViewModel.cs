@@ -8,10 +8,10 @@ using Wild_Atlas.Models;
 
 namespace Wild_Atlas.ViewModels
 {
-    public partial class SpeciesCheckResultViewModel : ObservableObject
+    public partial class SpeciesCheckResultViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
-        private SpeciesCheckFormData formData;
+        private readonly SpeciesCheckFormData formData;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {

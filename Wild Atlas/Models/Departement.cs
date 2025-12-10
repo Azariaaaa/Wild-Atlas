@@ -10,6 +10,7 @@ namespace Wild_Atlas.Models
     {
         public string Code { get; set; }
         public string Nom { get; set; }
+        public string GadmId { get; set; }
         public override string ToString()
         => Nom;
     }
